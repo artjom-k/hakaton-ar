@@ -57,6 +57,7 @@ public class AugmentedImageNode extends AnchorNode {
   private static CompletableFuture<ModelRenderable> urCorner;
   private static CompletableFuture<ModelRenderable> lrCorner;
   private static CompletableFuture<ModelRenderable> llCorner;
+  private static CompletableFuture<ModelRenderable> arrow;
   private static CompletableFuture<ViewRenderable> solarControlsStage;
   private BanknoteData banknoteData;
 
@@ -80,6 +81,10 @@ public class AugmentedImageNode extends AnchorNode {
       lrCorner =
           ModelRenderable.builder()
               .setSource(context, Uri.parse("models/frame_lower_right.sfb"))
+              .build();
+      arrow =
+          ModelRenderable.builder()
+              .setSource(context, Uri.parse("models/arrow.sfb"))
               .build();
 
       solarControlsStage =
@@ -105,8 +110,8 @@ public class AugmentedImageNode extends AnchorNode {
     this.image = image;
 
     // If any of the models are not loaded, then recurse when all are loaded.
-    if (!ulCorner.isDone() || !urCorner.isDone() || !llCorner.isDone() || !lrCorner.isDone() || !solarControlsStage.isDone()) {
-      CompletableFuture.allOf(ulCorner, urCorner, llCorner, lrCorner, solarControlsStage)
+    if (!arrow.isDone() ||!ulCorner.isDone() || !urCorner.isDone() || !llCorner.isDone() || !lrCorner.isDone() || !solarControlsStage.isDone()) {
+      CompletableFuture.allOf(arrow, ulCorner, urCorner, llCorner, lrCorner, solarControlsStage)
           .thenAccept((Void aVoid) -> setImage(image))
           .exceptionally(
               throwable -> {
@@ -122,7 +127,7 @@ public class AugmentedImageNode extends AnchorNode {
     Vector3 localPosition = new Vector3();
     Node cornerNode;
 
-    // Upper left corner.
+    /*// Upper left corner.
     localPosition.set(-0.5f * image.getExtentX(), 0.0f, -0.5f * image.getExtentZ());
     cornerNode = new Node();
     cornerNode.setParent(this);
@@ -148,7 +153,17 @@ public class AugmentedImageNode extends AnchorNode {
     cornerNode = new Node();
     cornerNode.setParent(this);
     cornerNode.setLocalPosition(localPosition);
-    cornerNode.setRenderable(llCorner.getNow(null));
+    cornerNode.setRenderable(llCorner.getNow(null));*/
+
+    float offsetStep = image.getExtentX()/20;
+
+    // Arrow corner.
+    localPosition.set(0f, 0f, -offsetStep*5);
+    cornerNode = new Node();
+    cornerNode.setParent(this);
+    cornerNode.setLocalPosition(localPosition);
+    cornerNode.setLocalRotation(new Quaternion(-0.9F,0.2F,-0.9F,1F));
+    cornerNode.setRenderable(arrow.getNow(null));
 
     Node solarControls = new Node();
     ViewRenderable renderable = solarControlsStage.getNow(null);
@@ -167,9 +182,12 @@ public class AugmentedImageNode extends AnchorNode {
         ImageView imageView = view.findViewById(R.id.sightImageView);
         imageView.setImageResource(banknoteData.getImg_res_id());
     }
-    solarControls.setLocalPosition(new Vector3(-0.5f * image.getExtentX(), 0f, -0.5f * image.getExtentZ()));
-    solarControls.setLocalRotation(new Quaternion(-0.5F,0F,0F,1F));
+    solarControls.setLocalPosition(new Vector3(offsetStep, offsetStep, - 0.5f * image.getExtentZ() - 8*offsetStep));
+    solarControls.setLocalRotation(new Quaternion(-0.3F,0F,0F,1F));
+    solarControls.setLocalScale(new Vector3(0.36f,0.36f,0.36f));
     solarControls.setParent(this);
+
+
 
   }
 

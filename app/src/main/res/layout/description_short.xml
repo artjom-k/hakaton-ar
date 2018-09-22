@@ -1,31 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical" android:layout_width="200dp"
+    android:layout_width="200dp"
+    android:layout_height="wrap_content"
     android:background="@drawable/rounded_bg"
-    android:layout_height="wrap_content">
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/bankNoteName"
-        android:layout_width="wrap_content"
-        android:layout_height="20dp"
-        android:layout_margin="@dimen/margin_small"
-        android:text="5 рублёў"
-        android:textStyle="bold"
-        android:textSize="11sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <RelativeLayout
+        android:id="@+id/topContainer"
+        android:layout_width="match_parent"
+        android:layout_height="22dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/rounded_bg_top">
 
-    <ImageView
-        android:id="@+id/flagImageView"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_margin="@dimen/margin_small"
-        app:layout_constraintEnd_toStartOf="@+id/bankNoteName"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/belarus" />
+
+        <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
+
+
+            <ImageView
+                android:id="@+id/flagImageView"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_gravity="center_vertical|right"
+                android:layout_margin="@dimen/margin_small"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/belarus" />
+
+            <TextView
+                android:id="@+id/bankNoteName"
+                android:layout_width="wrap_content"
+                android:layout_height="24dp"
+                android:layout_gravity="center_vertical|left"
+                android:layout_margin="@dimen/margin_small"
+                android:gravity="center_vertical|left"
+                android:text="5 рублёў"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/sightTitleTextView"
@@ -33,17 +50,19 @@
         android:layout_height="20dp"
         android:layout_margin="@dimen/margin_small"
         android:text="Камянецкая вежа"
+        android:textColor="@color/colorPrimaryText"
         android:textSize="10sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bankNoteName" />
+        app:layout_constraintTop_toBottomOf="@+id/topContainer" />
 
     <ImageView
         android:id="@+id/sightImageView"
         android:layout_width="75dp"
         android:layout_height="75dp"
         android:layout_margin="@dimen/margin_small"
+        android:paddingBottom="@dimen/margin_normal"
         android:scaleType="centerCrop"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sightTitleTextView"
@@ -54,13 +73,15 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="@dimen/margin_small"
+        android:paddingLeft="@dimen/margin_normal"
         android:scrollbars="vertical"
         android:text="У горадзе Камянец Брэсцкай вобласці знаходзіцца ўнікальны помнік архітэктуры і абарончага дойлідства другой палавіны XIII стагоддзя – Камянецкая вежа (Камянецкі стоўп). "
+        android:textColor="@color/colorSecondaryText"
         android:textSize="8sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/sightImageView"
-        app:layout_constraintTop_toBottomOf="@+id/sightTitleTextView"/>
+        app:layout_constraintTop_toBottomOf="@+id/sightTitleTextView" />
 
 </android.support.constraint.ConstraintLayout>
