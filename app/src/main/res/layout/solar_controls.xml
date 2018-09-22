@@ -17,8 +17,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/testview"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="80dp"
+    android:layout_height="54dp"
     android:background="@drawable/rounded_bg"
     android:orientation="horizontal"
     android:padding="4dp"
@@ -26,17 +26,22 @@
     android:clipToPadding="false" >
 
     <ImageView
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
         android:src="@drawable/vezha"
-        android:scaleType="centerCrop"
+        android:scaleType="centerInside"
+        android:layout_gravity="center_vertical"
         tools:src="@tools:sample/cities"/>
 
     <TextView
         android:id="@+id/orbitHeader"
         android:layout_marginLeft="4dp"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:layout_gravity="center_vertical"
+        android:textSize="10sp"
         android:text="У горадзе Камянец Брэсцкай вобласці знаходзіцца ўнікальны помнік архітэктуры і абарончага дойлідства другой палавіны XIII стагоддзя – Камянецкая вежа (Камянецкі стоўп). На ўзгорку каля некалі паўнаводнай ракі Лясная ўзвышаецца велічнае збудаванне, падобнае на вялізную шахматную ладдзю. "
         tools:src="@tools:sample/lorem"
         />
