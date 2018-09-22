@@ -24,6 +24,8 @@ import com.google.ar.core.AugmentedImage;
 import com.google.ar.core.Frame;
 import com.google.ar.core.TrackingState;
 import com.google.ar.sceneform.FrameTime;
+import com.google.ar.sceneform.samples.common.BanknoteData;
+import com.google.ar.sceneform.samples.common.helpers.DataUtils;
 import com.google.ar.sceneform.samples.common.helpers.SnackbarHelper;
 import com.google.ar.sceneform.ux.ArFragment;
 import java.util.Collection;
@@ -92,7 +94,17 @@ public class AugmentedImageActivity extends AppCompatActivity {
 
           // Create a new anchor for newly found images.
           if (!augmentedImageMap.containsKey(augmentedImage)) {
-            AugmentedImageNode node = new AugmentedImageNode(this);
+            DataUtils data = new DataUtils();
+            BanknoteData banknoteData = null;
+            for (BanknoteData bankdata : data.getData()) {
+              if (augmentedImage.getName().equals(bankdata.getId())){
+                banknoteData = bankdata;
+                break;
+              }
+            }
+
+
+            AugmentedImageNode node = new AugmentedImageNode(this, banknoteData);
             node.setImage(augmentedImage);
             augmentedImageMap.put(augmentedImage, node);
             arFragment.getArSceneView().getScene().addChild(node);

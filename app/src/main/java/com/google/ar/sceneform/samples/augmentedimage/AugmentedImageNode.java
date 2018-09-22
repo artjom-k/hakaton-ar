@@ -20,6 +20,8 @@ import android.content.Context;
 import android.net.Uri;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.ar.core.AugmentedImage;
@@ -30,6 +32,7 @@ import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.rendering.Renderable;
 import com.google.ar.sceneform.rendering.ViewRenderable;
+import com.google.ar.sceneform.samples.common.BanknoteData;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -55,10 +58,12 @@ public class AugmentedImageNode extends AnchorNode {
   private static CompletableFuture<ModelRenderable> lrCorner;
   private static CompletableFuture<ModelRenderable> llCorner;
   private static CompletableFuture<ViewRenderable> solarControlsStage;
-  private static CompletableFuture<ViewRenderable> testControlsStage;
+  private BanknoteData banknoteData;
 
-  public AugmentedImageNode(Context context) {
+
+  public AugmentedImageNode(Context context, BanknoteData banknoteData) {
     // Upon construction, start loading the models for the corners of the frame.
+    this.banknoteData = banknoteData;
     if (ulCorner == null) {
       ulCorner =
           ModelRenderable.builder()
@@ -149,8 +154,18 @@ public class AugmentedImageNode extends AnchorNode {
     ViewRenderable renderable = solarControlsStage.getNow(null);
     solarControls.setRenderable(renderable);
     if (renderable != null){
-      TextView textView = renderable.getView().findViewById(R.id.sightDescriptionTextView);
-      textView.setMovementMethod(new ScrollingMovementMethod());
+        View view = renderable.getView();
+        TextView bankNoteName = view.findViewById(R.id.bankNoteName);
+        bankNoteName.setText(banknoteData.getName());
+        TextView sightTitle = view.findViewById(R.id.sightTitleTextView);
+        sightTitle.setText(banknoteData.getTitle());
+        TextView textView = view.findViewById(R.id.sightDescriptionTextView);
+        textView.setText(banknoteData.getDescription());
+        textView.setMovementMethod(new ScrollingMovementMethod());
+        ImageView flag = view.findViewById(R.id.flagImageView);
+        flag.setImageResource(banknoteData.getFlag_res_id());
+        ImageView imageView = view.findViewById(R.id.sightImageView);
+        imageView.setImageResource(banknoteData.getImg_res_id());
     }
     solarControls.setLocalPosition(new Vector3(-0.5f * image.getExtentX(), 0f, -0.5f * image.getExtentZ()));
     solarControls.setLocalRotation(new Quaternion(-0.5F,0F,0F,1F));
