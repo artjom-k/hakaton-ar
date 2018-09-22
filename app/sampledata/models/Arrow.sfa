@@ -68,7 +68,7 @@
       file: "sampledata/models/Arrow.obj",
       name: "Arrow",
       recenter: "root",
-      scale: 0.009,
+      scale: 0.008,
    },
    version: "0.52:1",
 }

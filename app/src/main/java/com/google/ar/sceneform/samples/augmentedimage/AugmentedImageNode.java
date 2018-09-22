@@ -18,16 +18,21 @@ package com.google.ar.sceneform.samples.augmentedimage;
 
 import android.content.Context;
 import android.net.Uri;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.widget.TextView;
+
 import com.google.ar.core.AugmentedImage;
 import com.google.ar.sceneform.AnchorNode;
 import com.google.ar.sceneform.Node;
 import com.google.ar.sceneform.math.Quaternion;
 import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.rendering.ModelRenderable;
+import com.google.ar.sceneform.rendering.Renderable;
 import com.google.ar.sceneform.rendering.ViewRenderable;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Node for rendering an augmented image. The image is framed by placing the virtual picture frame
@@ -79,7 +84,7 @@ public class AugmentedImageNode extends AnchorNode {
 
       solarControlsStage =
           ViewRenderable.builder()
-              .setView(context, R.layout.solar_controls)
+              .setView(context, R.layout.description_short)
               .build();
 
 //      testControlsStage = ViewRenderable.builder()
@@ -148,25 +153,27 @@ public class AugmentedImageNode extends AnchorNode {
     float offsetStep = image.getExtentX()/20;
 
     // Arrow corner.
-    localPosition.set(0f, 0f, -offsetStep*3);
+    localPosition.set(0f, 0f, -offsetStep*5);
     cornerNode = new Node();
     cornerNode.setParent(this);
     cornerNode.setLocalPosition(localPosition);
-    cornerNode.setLocalRotation(new Quaternion(-0.2F,-0.6F,-0.6F,1F));
+    cornerNode.setLocalRotation(new Quaternion(-0.9F,0.2F,-0.9F,1F));
     cornerNode.setRenderable(arrow.getNow(null));
 
     Node solarControls = new Node();
-    solarControls.setRenderable(solarControlsStage.getNow(null));
-    //solarControls.setLocalPosition(new Vector3(-0.5f * image.getExtentX(), offssetStep, -0.5f * image.getExtentZ()));
-    solarControls.setLocalPosition(new Vector3(0, offsetStep, - 0.5f * image.getExtentZ() - 8*offsetStep));
+    ViewRenderable renderable = solarControlsStage.getNow(null);
+    solarControls.setRenderable(renderable);
+    if (renderable != null){
+      TextView textView = renderable.getView().findViewById(R.id.sightDescriptionTextView);
+      textView.setMovementMethod(new ScrollingMovementMethod());
+    }
+    solarControls.setLocalPosition(new Vector3(offsetStep, offsetStep, - 0.5f * image.getExtentZ() - 8*offsetStep));
     solarControls.setLocalRotation(new Quaternion(-0.3F,0F,0F,1F));
+    solarControls.setLocalScale(new Vector3(0.36f,0.36f,0.36f));
     solarControls.setParent(this);
 
-//    localPosition.set(-0.5f * image.getExtentX(), 0.0f, -0.5f * image.getExtentZ());
-//    Node test = new Node();
-//    test.setRenderable(testControlsStage.getNow(null));
-//    test.setLocalPosition(localPosition);
-//    test.setParent(this);
+
+
   }
 
   public AugmentedImage getImage() {
