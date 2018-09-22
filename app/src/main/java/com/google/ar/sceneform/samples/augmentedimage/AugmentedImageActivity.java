@@ -94,17 +94,7 @@ public class AugmentedImageActivity extends AppCompatActivity {
 
           // Create a new anchor for newly found images.
           if (!augmentedImageMap.containsKey(augmentedImage)) {
-            DataUtils data = new DataUtils();
-            BanknoteData banknoteData = null;
-            for (BanknoteData bankdata : data.getData()) {
-              if (augmentedImage.getName().equals(bankdata.getId())){
-                banknoteData = bankdata;
-                break;
-              }
-            }
-
-
-            AugmentedImageNode node = new AugmentedImageNode(this, banknoteData);
+            AugmentedImageNode node = new AugmentedImageNode(this, arFragment.getTransformationSystem());
             node.setImage(augmentedImage);
             augmentedImageMap.put(augmentedImage, node);
             arFragment.getArSceneView().getScene().addChild(node);

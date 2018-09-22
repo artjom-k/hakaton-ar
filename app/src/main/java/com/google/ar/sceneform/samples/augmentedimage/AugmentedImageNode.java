@@ -33,6 +33,9 @@ import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.rendering.Renderable;
 import com.google.ar.sceneform.rendering.ViewRenderable;
 import com.google.ar.sceneform.samples.common.BanknoteData;
+import com.google.ar.sceneform.samples.common.helpers.DataUtils;
+import com.google.ar.sceneform.ux.TransformableNode;
+import com.google.ar.sceneform.ux.TransformationSystem;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -60,11 +63,13 @@ public class AugmentedImageNode extends AnchorNode {
   private static CompletableFuture<ModelRenderable> arrow;
   private static CompletableFuture<ViewRenderable> solarControlsStage;
   private BanknoteData banknoteData;
+  private TransformationSystem transformationSystem;
 
 
-  public AugmentedImageNode(Context context, BanknoteData banknoteData) {
+  public AugmentedImageNode(Context context, TransformationSystem transformationSystem) {
     // Upon construction, start loading the models for the corners of the frame.
-    this.banknoteData = banknoteData;
+    //this.banknoteData = banknoteData;
+      this.transformationSystem = transformationSystem;
     if (ulCorner == null) {
       ulCorner =
           ModelRenderable.builder()
@@ -165,10 +170,21 @@ public class AugmentedImageNode extends AnchorNode {
     cornerNode.setLocalRotation(new Quaternion(-0.9F,0.2F,-0.9F,1F));
     cornerNode.setRenderable(arrow.getNow(null));
 
+    //TransformableNode solarControls = new TransformableNode(transformationSystem);
+
     Node solarControls = new Node();
     ViewRenderable renderable = solarControlsStage.getNow(null);
     solarControls.setRenderable(renderable);
     if (renderable != null){
+        DataUtils data = DataUtils.getInstance();
+        BanknoteData banknoteData = null;
+        for (BanknoteData bankdata : data.getData()) {
+            if (image.getName().equals(bankdata.getId())){
+                banknoteData = bankdata;
+                break;
+            }
+        }
+
         View view = renderable.getView();
         TextView bankNoteName = view.findViewById(R.id.bankNoteName);
         bankNoteName.setText(banknoteData.getName());
